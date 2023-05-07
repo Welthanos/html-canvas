@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creeper</title>
+</head>
+
+<body style="background-color:#b6ffbc;">
+
+    <canvas width="400" height="350"
+        style="display: flex; margin-left: auto; margin-right: auto; margin-top: 150px;"></canvas>
+
+    <script>
+        var canvas = document.querySelector('canvas');
+        var drawer = canvas.getContext('2d');
+
+        drawer.fillStyle = 'darkgreen';
+        drawer.fillRect(0, 0, 400, 350);
+
+        drawer.fillStyle = 'black';
+        drawer.fillRect(55, 70, 100, 100);
+
+        drawer.fillStyle = 'black';
+        drawer.fillRect(245, 70, 100, 100);
+
+        drawer.fillStyle = 'black';
+        drawer.fillRect(155, 170, 90, 120);
+
+        drawer.fillStyle = 'black';
+        drawer.fillRect(105, 220, 50, 130);
+
+        drawer.fillStyle = 'black';
+        drawer.fillRect(245, 220, 50, 130);
+    </script>
+
+</body>
+
+</html>

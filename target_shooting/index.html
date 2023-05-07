@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Target Shooting</title>
+</head>
+
+<body>
+
+  <div id="score">
+    <h1>Tiros no alvo: </h1>
+    <h1 id="points"> 0 </h1>
+  </div>
+
+  <div id="background">
+    <canvas width="800" height="500"></canvas>
+  </div>
+
+  <input id="button" type="button" value="Start Game">
+
+</body>
+
+<script>
+
+  var canvas = document.querySelector('canvas');
+  var drawer = canvas.getContext('2d');
+
+  drawer.fillStyle = '#fff';
+  drawer.fillRect(0, 0, 800, 500);
+
+  var radius = 10;
+  var points = 0;
+
+  var randomX;
+  var randomY;
+
+  function drawCircle(x, y, radius, color) {
+
+    drawer.fillStyle = color;
+    drawer.beginPath();
+    drawer.arc(x, y, radius, 0, 2 * Math.PI);
+    drawer.fill();
+  }
+
+
+  function drawTarget(x, y, color) {
+
+    drawCircle(x, y, radius + 20, color);
+    drawCircle(x, y, radius + 10, '#fff');
+    drawCircle(x, y, radius, color);
+  }
+
+
+  function randomNumber(max) {
+
+    var number = Math.floor(Math.random() * max);
+
+    // configurando o alvo para o valor de 'x' e 'y' não sair da tela (esquerda e topo).
+    if (number < 30) {
+      number = number + (30 - number);
+    }
+
+    return number;
+  }
+
+
+  function positionateTarget() {
+
+    clearCanvas();
+
+    // configurando o alvo para 'x' e 'y' não extrapolar a tela (direita e embaixo).
+    // valores settados como tamanho do canvas (1000 x 600) menos o raio do alvo (30);
+    randomX = randomNumber(770);
+    randomY = randomNumber(470);
+
+    drawTarget(randomX, randomY, '#f00');
+  }
+
+  function shoot(event) {
+
+    var x = event.pageX - canvas.offsetLeft;
+    var y = event.pageY - canvas.offsetTop;
+
+    if ((x > randomX - radius)
+      && (x < randomX + radius)
+      && (y > randomY - radius)
+      && (y < randomY + radius)) {
+
+      drawTarget(randomX, randomY, '#dd0000');
+
+      setTimeout(clearCanvas, 35);
+
+      document.getElementById('points').innerHTML = points++;
+    }
+  }
+
+  function clearCanvas() { drawer.clearRect(0, 0, 800, 500) }
+
+  var interval = setInterval(positionateTarget, 1200);
+
+  canvas.onclick = shoot;
+
+  function stop() {
+
+    clearCanvas();
+    clearInterval(interval);
+    randomX = null;
+    randomY = null;
+
+  }
+
+  setTimeout(stop, 10000);
+
+</script>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Blackboard</title>
+</head>
+
+<body style="background-color:#000;">
+
+    <div>
+        <h2> Selecione uma cor: </h2>
+        <input type="color" id="color">
+    </div>
+
+    <div>
+        <h2> Selecione uma espessura: </h2>
+        <input type="range" id="range" value="5" min="1">
+    </div>
+
+    <div>
+        <h2> Borracha: </h2>
+        <input type="button" id="button">
+    </div>
+
+    <canvas width="800" height="450"></canvas>
+
+    <script>
+        var color = document.getElementById('color');
+        var range = document.getElementById('range');
+        var button = document.getElementById('button');
+
+        var canvas = document.querySelector('canvas');
+        var drawer = canvas.getContext('2d');
+
+        drawer.fillStyle = '#fff';
+        drawer.fillRect(0, 0, 800, 450);
+
+        var action = 'draw';
+        var drawerOn = false;
+        var eraserOn = false;
+
+        function drawOrErase(event) {
+            var x = event.pageX - canvas.offsetLeft - 20;
+            var y = event.pageY - canvas.offsetTop - 20;
+
+            if (drawerOn) {
+                drawer.fillStyle = color.value;
+                drawer.beginPath();
+                drawer.arc(x, y, range.value, 0, 2 * 3.14);
+                drawer.fill();
+            }
+
+            if (eraserOn) {
+                drawer.fillStyle = '#fff';
+                drawer.beginPath();
+                drawer.arc(x, y, range.value, 0, 2 * 3.14);
+                drawer.fill();
+            }
+        }
+
+        canvas.onmousemove = drawOrErase;
+
+        canvas.onmousedown = function () {
+            if (action == 'draw') {
+                drawerOn = true;
+            }
+
+            if (action == 'erase') {
+                eraserOn = true;
+            }
+        }
+
+        canvas.onmouseup = function () {
+            if (action == 'draw') {
+                drawerOn = false;
+            }
+
+            if (action == 'erase') {
+                eraserOn = false;
+            }
+        }
+
+        button.onclick = function () {
+            if (action == 'draw') {
+                action = 'erase';
+            } else {
+                action = 'draw';
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

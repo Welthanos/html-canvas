@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Charts</title>
+</head>
+
+<body style="background-color: #000;">
+    <canvas width="400" height="250"
+        style="display: flex; margin-left: auto; margin-right: auto; margin-top: 100px; background-color: #fff;"></canvas>
+
+    <script>
+        function desenhaRetangulo(x, y, width, height, color) {
+            var canvas = document.querySelector('canvas');
+            var drawer = canvas.getContext('2d');
+
+            drawer.fillStyle = color;
+            drawer.fillRect(x, y, width, height);
+            drawer.strokeStyle = 'black';
+            drawer.strokeRect(x, y, width, height);
+        }
+
+
+        function desenhatext(x, y, text) {
+            var canvas = document.querySelector('canvas');
+            var drawer = canvas.getContext('2d');
+
+            drawer.font = '15px Georgia';
+            drawer.fillStyle = 'black';
+            drawer.fillText(text, x, y);
+        }
+
+
+        function drawChart(x, y, year, colors, text) {
+
+            desenhatext(x, y - 10, text);
+
+            var sumHeight = 0;
+
+            for (var i = 0; i < year.length; i++) {
+                var height = year[i];
+                desenhaRetangulo(x, y + sumHeight, 50, height, colors[i]);
+                sumHeight = sumHeight + height;
+            }
+        }
+
+
+        function drawSubtitle(browsers, colors) {
+
+            var canvas = document.querySelector('canvas');
+            var drawer = canvas.getContext('2d');
+
+            var x = 30;
+
+            for (var i = 0; i < browsers.length; i++) {
+                drawer.fillStyle = colors[i];
+                drawer.fillRect(x, 200, 20, 16);
+                drawer.strokeRect(x, 200, 20, 16);
+                drawer.font = '12px Georgia';
+                drawer.fillStyle = 'black';
+                drawer.fillText(browsers[i], x + 30, 214);
+
+                x += 90;
+            }
+        }
+
+        var year2015 = [50, 25, 20, 5];
+        var year2016 = [65, 20, 13, 2];
+        var colors = ['blue', 'green', 'yellow', 'red'];
+        var browsers = ['Chrome', 'Firefox', 'Safari', 'Outros']
+
+        drawChart(50, 50, year2015, colors, '2015');
+        drawChart(150, 50, year2016, colors, '2016');
+        drawSubtitle(browsers, colors);
+    </script>
+</body>
+
+</html>

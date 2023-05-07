@@ -1,0 +1,29 @@
+body {
+    overflow: hidden;
+}
+
+div {
+    display: block;
+    color: #fff;
+    margin: 90px 0 0 20px;
+}
+
+canvas {
+    position: absolute;
+    display: flex;
+    top: 65px;
+    left: 370px;
+    width: 800px;
+    height: 450px;
+
+    border: 20px solid #722705;
+}
+
+input[type='range'] {
+    width: 100px;
+    margin: 0;
+}
+
+input[type=button] {
+    width: 50px;
+}
