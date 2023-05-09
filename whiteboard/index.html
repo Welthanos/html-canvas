@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Blackboard</title>
+    <title>Whiteboard</title>
 </head>
 
-<body style="background-color:#000;">
+<body>
 
     <div>
         <h2> Selecione uma cor: </h2>
@@ -29,69 +29,62 @@
     <canvas width="800" height="450"></canvas>
 
     <script>
-        var color = document.getElementById('color');
         var range = document.getElementById('range');
         var button = document.getElementById('button');
+        var color = document.getElementById('color');
 
         var canvas = document.querySelector('canvas');
         var drawer = canvas.getContext('2d');
 
-        drawer.fillStyle = '#fff';
+        var defaultColor = '#fff';
+
+        drawer.fillStyle = defaultColor;
         drawer.fillRect(0, 0, 800, 450);
 
-        var action = 'draw';
         var drawerOn = false;
         var eraserOn = false;
 
+        var action = {
+            currentAction: 'draw',
+            draw: (bool) => { if (action['currentAction'] == 'draw') drawerOn = bool },
+            erase: (bool) => { if (action['currentAction'] == 'erase') eraserOn = bool },
+        }
+
         function drawOrErase(event) {
+            if (drawerOn == false && eraserOn == false) return;
+
             var x = event.pageX - canvas.offsetLeft - 20;
             var y = event.pageY - canvas.offsetTop - 20;
 
-            if (drawerOn) {
-                drawer.fillStyle = color.value;
-                drawer.beginPath();
-                drawer.arc(x, y, range.value, 0, 2 * 3.14);
-                drawer.fill();
-            }
+            if (drawerOn) drawer.fillStyle = color.value;
+            if (eraserOn) drawer.fillStyle = defaultColor;
 
-            if (eraserOn) {
-                drawer.fillStyle = '#fff';
-                drawer.beginPath();
-                drawer.arc(x, y, range.value, 0, 2 * 3.14);
-                drawer.fill();
-            }
+            drawer.beginPath();
+            drawer.arc(x, y, range.value, 0, 2 * 3.14);
+            drawer.fill();
         }
 
+        // Desenhando ou apagando o canvas
         canvas.onmousemove = drawOrErase;
 
-        canvas.onmousedown = function () {
-            if (action == 'draw') {
-                drawerOn = true;
-            }
+        // Quando o mouse estiver sendo pressionado
+        canvas.onmousedown = () => {
 
-            if (action == 'erase') {
-                eraserOn = true;
-            }
+            action['draw'](true);
+            action['erase'](true);
         }
 
-        canvas.onmouseup = function () {
-            if (action == 'draw') {
-                drawerOn = false;
-            }
+        // Quando o mouse não estiver sendo pressionado
+        canvas.onmouseup = () => {
 
-            if (action == 'erase') {
-                eraserOn = false;
-            }
+            action['draw'](false);
+            action['erase'](false);
         }
 
-        button.onclick = function () {
-            if (action == 'draw') {
-                action = 'erase';
-            } else {
-                action = 'draw';
-            }
+        // Ativando ou desativando a borracha
+        button.onclick = () => {
+            action.currentAction = action['currentAction'] == 'draw' ? 'erase' : 'draw';
         }
-
     </script>
 
 </body>
